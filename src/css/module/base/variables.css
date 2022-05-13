@@ -1,0 +1,68 @@
+:root {
+  /* Colors */
+  --color-primary: #0055a5;
+  --color-secondary: chartreuse;
+  --text-color-upfront: var(--black);
+  --text-color-behind: var(--grey-600);
+  --surface-bg-color: var(--white);
+
+  /* Text */
+  --font-family-serif: Rockwell, serif;
+  /* --font-family-serif: Baskerville, serif; */
+  /* --font-family-serif: BiauKai, serif; */
+  /* --font-family-serif: "Big Caslon", serif; */
+  /* --font-family-serif: "Bodoni 72", serif; */
+  /* --font-family-serif: "Didot", serif; */
+  /* --font-family-serif: "Canela Text", serif; */
+  
+  /* --font-family-sans-serif: Helvetica, sans-serif; */
+  /* --font-family-sans-serif: "Avenir", sans-serif; */
+  /* --font-family-sans-serif: "Myanmar MN", serif; */
+  /* --font-family-sans-serif: Optima, sans-serif; */
+  /* --font-family-sans-serif: "Hiragino Sans", sans-serif; */
+  --font-family-sans-serif: "Heiti TC", sans-serif;
+  /* --font-family-sans-serif: "Bangla MN", sans-serif; */
+  /* --font-family-sans-serif: "Cambay Devanagari", sans-serif; */
+  
+  /* --font-family-monospace: 'PT Mono', monospace; */
+  --font-family-monospace: 'Andale Mono', monospace;
+  
+  /* --font-family-toy: "Baloo Thambi 2"; */
+  /* --font-family-toy: "BM Hanna 11yrs Old"; */
+  /* --font-family-toy: "BM Hanna Air"; */
+  /* --font-family-toy: "BM Hanna Pro"; */
+  /* --font-family-toy: "BM Kirang Haerang"; */
+  /* --font-family-toy: "BM Yeonsung"; */
+
+  --text-gigantic: normal 200 4.109rem/1.5 var(--font-family-sans-serif);
+  --text-huge: normal 400 3.24rem/1.5 var(--font-family-sans-serif);
+  --text-h1: normal 400 2.88rem/1.5 var(--font-family-sans-serif);
+  --text-h2: normal 400 2.28rem/1.5 var(--font-family-sans-serif);
+  --text-h3: normal 400 1.802rem/1.5 var(--font-family-sans-serif);
+  --text-h4: normal 400 1.602rem/1.5 var(--font-family-sans-serif);
+  --text-h5: normal 400 1.266rem/1.5 var(--font-family-sans-serif);
+  --text-body: normal 400 1rem/1.71 var(--font-family-sans-serif);
+  --text-small-1: normal 400 0.889rem/1.2 var(--font-family-sans-serif);
+  --text-small-2: normal 400 0.790rem/1.2 var(--font-family-sans-serif);
+  --text-small-3: normal 400 0.702rem/1.2 var(--font-family-sans-serif);
+  /* font: font-style font-variant font-weight font-size/line-height font-family; */
+
+  /* Spacing */
+  --spacing-unit: .25rem; /*  4px */
+  /* Transition */
+  --transition-duration-fast: 0.2s;
+  --transition-duration-normal: 0.5s;
+  --transition-duration-slow: 0.8s;
+  --transition-preset: var(--transition-duration-normal) ease;
+  --transition-preset-2: var(--transition-duration-normal) cubic-bezier(0.55, 0.09, 0.68, 0.53);
+  --transition-preset-3:  var(--transition-duration-fast) cubic-bezier(0.55, 0.09, 0.68, 0.53);
+  /* Other */
+  --border-radius: 1px;
+
+  /* Containers */
+  --container-large-max-width: 1200px;
+  --container-medium-max-width: 960px;
+  --container-small-max-width: 720px;
+  --container-tiny-max-width: 480px;
+}
+

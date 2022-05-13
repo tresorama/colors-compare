@@ -1,0 +1,12 @@
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+textarea {
+  background-color: rgba(0,0,0,0.1);
+  background-color: var(--grey-200);
+  color: var(--grey-800);
+  padding: 1em 0.5em;
+}

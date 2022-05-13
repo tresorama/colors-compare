@@ -1,0 +1,14 @@
+.header {
+  text-align: center;
+  padding: 
+    calc(var(--spacing-unit) * 6) 
+    calc(var(--spacing-unit) * 0) 
+    calc(var(--spacing-unit) * 2)
+    ;
+}
+.header__heading {
+  font: var(--text-h1);
+}
+.header__subheading {
+  font: var(--text-h5);
+}

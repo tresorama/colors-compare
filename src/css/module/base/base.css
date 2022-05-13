@@ -1,0 +1,13 @@
+html {
+  font-size: 90%;
+}
+body {
+  font: var(--text-body);
+  color: var(--text-color-upfront);
+  letter-spacing: 0.17em;
+  -webkit-text-size-adjust: none;
+}
+
+* {
+  border-radius: var(--border-radius);
+}

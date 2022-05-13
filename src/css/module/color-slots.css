@@ -1,0 +1,108 @@
+/* =================================================== 
+      Color Slots Section
+=================================================== */
+.color-slots__header {
+  display: none;
+}
+
+.color-slots__slots {
+  display: flex;
+}
+.color-slots__slots > * {
+  flex: 1;
+}
+
+.color-slots__footer {
+  padding:
+    calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 0) calc(var(--spacing-unit) * 2);
+  display: flex;
+}
+
+
+/* =================================================== 
+      The Color Slot
+=================================================== */
+.color-slot {
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.color-slot__header {
+  padding:
+    calc(var(--spacing-unit) * 2);
+}
+.color-slot__name {
+  display: none;
+}
+
+.color-slot__input {
+  width: 100%;
+}
+
+.color-slot__content {
+  position: relative;
+}
+
+.color-slot__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.color-slot:not([class*="color-slot--hover"]) .color-slot__overlay {
+  display: none;
+}
+
+.color-slot__overlay:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, .25));
+  z-index: -1;
+  /* opacity: .4;
+  filter: contrast(0%); */
+}
+[data-color-is-light="false"] .color-slot__overlay {
+  color: white;
+}
+
+
+.color-slot__overlay-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.color-slot__color-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color-slot__color-actions--bottom {
+  margin-top: auto;
+}
+
+.color-slot__button {
+  flex: 1;
+  padding:
+    calc(var(--spacing-unit) * 4);
+  background-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.color-slot__button-text {
+  display: none;
+}
+
+.color-slot__color-preview {
+  height: 40vh;
+  background-color: var(--color-code, transparent);
+}

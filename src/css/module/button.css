@@ -1,0 +1,80 @@
+.btn {
+  --text-color: var(--button-text-color, black);
+  --bg-color: var(--button-bg-color, rgb(238, 238, 238));
+  --hover-text-color: var(--button-hover-text-color, black);
+  --hover-bg-color: var(--button-hover-bg-color, rgb(212, 211, 211));
+  /* prettier-ignore */
+  --border: 
+    var(--button-border-width, 1px) 
+    var(--button-border-style, solid)
+    var(--button-border-color, currentColor);
+  /* prettier-ignore */
+  --hover-border: 
+    var(--button-hover-border-width, 1px) 
+    var(--button-hover-border-style, solid)
+    var(--button-hover-border-color, currentColor);
+  /* prettier-ignore */
+  --transition: 
+      var(--button-transition-property, opacity, color, background-color, transform) 
+      var(--button-transition-duration, 200ms)
+      var(--button-transition-easing, ease-out)
+      var(--button-transition-delay, 0ms);
+  /* prettier-ignore */
+  --hover-transition: 
+      var(--button-hover-transition-property, opacity, color, background-color, transform) 
+      var(--button-hover-transition-duration, 200ms)
+      var(--button-hover-transition-easing, ease-out)
+      var(--button-hover-transition-delay, 0ms);
+  /* prettier-ignore */
+  --box-shadow: 
+      var(--button-box-shadow, 3px 3px 0px var(--button-box-shadow-color, currentColor));
+  /* prettier-ignore */
+  --hover-box-shadow: 
+      var(--button-hover-box-shadow, 3px 3px 0px var(--button-hover-box-shadow-color, currentColor));
+  --transform: var(--button-transform, none);
+  --hover-transform: var(--button-hover-transform, translateY(-2px));
+
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  transform: var(--transform);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3em 1.8em;
+  cursor: pointer;
+}
+.btn:hover {
+  color: var(--hover-text-color);
+  background-color: var(--hover-bg-color);
+  border: var(--hover-border);
+  box-shadow: var(--hover-box-shadow);
+  transition: var(--hover-transition);
+  transform: var(--hover-transform);
+}
+.btn-color--1 {
+  --button-text-color: rgb(44, 70, 128);
+  --button-bg-color: rgb(238, 242, 252);
+  --button-hover-text-color: rgb(44, 70, 128);
+  --button-hover-bg-color: rgb(207, 217, 240);
+}
+.btn-color--2 {
+  --button-text-color: red;
+  --button-bg-color: rgb(238, 238, 238);
+  --button-hover-text-color: red;
+  --button-hover-bg-color: rgb(255, 198, 198);
+}
+.btn-color--3 {
+  --button-text-color: green;
+  --button-bg-color: rgb(238, 238, 238);
+  --button-hover-text-color: green;
+  --button-hover-bg-color: rgb(189, 255, 189);
+}
+.btn-color--4 {
+  --button-text-color: rgb(110, 100, 2);
+  --button-bg-color: rgb(255, 252, 95);
+  --button-hover-text-color: rgb(110, 100, 2);
+  --button-hover-bg-color: rgb(255, 251, 0);
+}
