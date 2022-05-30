@@ -363,8 +363,9 @@ class ColorSlotsStore {
   create_initial_store() {
     return {
       colors: [
-        { code: '#ffffff' },
-        { code: '#000000' },
+        { code: 'hsla(1,100%,50%,1)' },
+        { code: 'hsla(20,100%,50%,1)' },
+        { code: 'hsla(30,100%,50%,1)' },
       ],
     }
   }
