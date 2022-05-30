@@ -4,9 +4,10 @@
   "description": "A simple tool usde for campare colors code.",
   "main": "index.js",
   "scripts": {
-    "dev:assets": "webpack --watch",
-    "dev:server": "webpack serve --open",
-    "build": "webpack --config webpack.config.production.js"
+    "dev:server": "webpack serve",
+    "dev:server-open": "webpack serve --open",
+    "build": "rm -rf ./dist && webpack --config webpack.config.production.js",
+    "dev:assets": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,15 @@
   },
   "homepage": "https://bitbucket.org/tresorama/frontend-tool-colors-compare#readme",
   "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "babel-loader": "^8.2.5",
     "copy-webpack-plugin": "^10.2.4",
+    "core-js": "^3.22.7",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "regenerator-runtime": "^0.13.9",
     "style-loader": "^3.3.1",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
