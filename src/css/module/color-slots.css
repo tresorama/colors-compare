@@ -1,20 +1,25 @@
 /* =================================================== 
       Color Slots Section
 =================================================== */
+.color-slots {
+  --button-bg-color: rgba(0, 0, 0, 0.05);
+  --button-box-shadow:  0 0 2px 1px rgba(0, 0, 0, 0.1);
+  --color-slot-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
 .color-slots__header {
   display: none;
 }
-
 .color-slots__slots {
   display: flex;
 }
 .color-slots__slots > * {
   flex: 1;
 }
-
 .color-slots__footer {
   padding:
-    calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 0) calc(var(--spacing-unit) * 2);
+    calc(var(--spacing-unit) * 6) 
+    calc(var(--spacing-unit) * 0) 
+    calc(var(--spacing-unit) * 2);
   display: flex;
 }
 
@@ -23,19 +28,40 @@
       The Color Slot
 =================================================== */
 .color-slot {
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--color-slot-box-shadow);
 }
 
-.color-slot__header {
-  padding:
-    calc(var(--spacing-unit) * 2);
+/* Reusable Parts */
+.color-slot__button {
+  padding: calc(var(--spacing-unit) * 4);
+  background-color: var(--button-bg-color);
+  box-shadow: var(--button-box-shadow);
+  cursor: pointer;
 }
-.color-slot__name {
+.color-slot__button-text {
   display: none;
 }
 
+/* Unique Parts */
+.color-slot__header {
+  padding: calc(var(--spacing-unit) * 2);
+  display: flex;
+  flex-wrap: wrap;
+}
+.color-slot__name {
+  flex-basis: 100%;
+  display: none;
+}
+.color-slot__color-picker-opener {
+  flex-grow: 0;
+}
+.color-slot__color-picker-wrapper {
+  width: 0px;
+}
 .color-slot__input {
-  width: 100%;
+  min-width: 8em;
+  flex-grow: 1;
+  box-shadow: var(--button-box-shadow);
 }
 
 .color-slot__content {
@@ -66,8 +92,6 @@
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, .25));
   z-index: -1;
-  /* opacity: .4;
-  filter: contrast(0%); */
 }
 [data-color-is-light="false"] .color-slot__overlay {
   color: white;
@@ -90,16 +114,8 @@
   margin-top: auto;
 }
 
-.color-slot__button {
+.color-slot__color-actions .color-slot__button {
   flex: 1;
-  padding:
-    calc(var(--spacing-unit) * 4);
-  background-color: rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
-}
-
-.color-slot__button-text {
-  display: none;
 }
 
 .color-slot__color-preview {

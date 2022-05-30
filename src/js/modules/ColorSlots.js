@@ -2,6 +2,7 @@ import ClipboardHandler from '../utilities/ClipboardHandler';
 import SimpleBrowserStorage from '../utilities/SimpleBrowserStorage';
 import ColorDetector from '../utilities/ColorDetector';
 import AskConfirm from '../utilities/AskConfirm';
+import ColorPicker from 'vanilla-picker';
 
 export default class ColorSlots {
   constructor() {
@@ -71,6 +72,44 @@ export default class ColorSlots {
       this.store.persist_store(this.state);
       return;
     }
+    if (action === 'toggle_color_picker') {
+      const index = Number(payload.index);
+      const node_button = payload.node_button;
+      const node_color_picker_wrapper = payload.node_color_picker_wrapper;
+      const current_color_code = this.state.colors[index].code;
+      let picker;
+      if (!node_button.hasAttribute('data-color-picker-is-injected')) {
+        picker = new ColorPicker({
+          parent: node_color_picker_wrapper,
+          color: current_color_code,
+          onClose: color => {
+            // This will give you the color you selected
+            const color_code = color.hslaString;
+            // Code to do what you want with that color...
+            this.dispatch('update_color', { index, code: color_code });
+          },
+          // parent?: HTMLElement,
+          // popup?: 'top' | 'bottom' | 'left' | 'right' | false,
+          // template?: string,
+          // layout?: string,
+          // alpha?: boolean,
+          // editor?: boolean,
+          // editorFormat?: 'hex' | 'hsl' | 'rgb',
+          // cancelButton?: boolean,
+          // color?: string,
+          // onChange?: ColorCallback,
+          // onDone?: ColorCallback,
+          // onOpen?: ColorCallback,
+          // onClose?: ColorCallback,
+        });
+        node_button.setAttribute('data-color-picker-is-injected', true);
+        node_button._picker = picker;
+      }
+      picker = node_button._picker;
+      picker.openHandler();
+      return;
+    }
+
     throw new Error(`
     Action not supported by this dispatcher.
     
@@ -78,53 +117,6 @@ export default class ColorSlots {
     Event: ${JSON.stringify({ action, payload })}
   `);
   }
-}
-
-
-class ColorSlotsStore {
-  constructor() {
-    this.storage = new SimpleBrowserStorage('color-slots');
-    this.initialize_pesistent_store();
-  }
-
-  initialize_pesistent_store() {
-    if (!this.storage.get()) {
-      this.storage.set(this.create_initial_store());
-    }
-  }
-  create_initial_store() {
-    return {
-      colors: [
-        { code: '#ffffff' },
-        { code: '#000000' },
-      ],
-    }
-  }
-  is_initial_store(store) {
-    return JSON.stringify(store) === JSON.stringify(this.create_initial_store());
-  }
-  create_color_null() {
-    return {
-      code: 'black',
-    };
-  }
-  create_color(code) {
-    const color = this.create_color_null();
-    color.code = code;
-    return color;
-  }
-  get_last_time_store() {
-    const persisted_store = this.storage.get();
-    if (this.is_initial_store(persisted_store)) {
-      return null;
-    }
-    return persisted_store;
-  }
-  persist_store(store) {
-    this.storage.set(store);
-  }
-
-
 }
 
 class ColorSlotsView {
@@ -187,6 +179,21 @@ class ColorSlotsView {
     >
       <div class="color-slot__header">
         <p class="color-slot__name">Color ${i + 1}</p>
+        <button
+          type="button"
+          title="Open Color Picker"
+          class="color-slot__button color-slot__color-picker-opener"
+          data-js="color-slot-open-color-picker"
+          data-color-slot-index="${i}"
+        >
+          <span class="color-slot__button-icon" data-icon="color-picker"></span>
+          <span class="color-slot__button-text">Color Picker</span>
+        </button>
+        <div 
+          class="color-slot__color-picker-wrapper"
+          data-js="color-slot-color-picker-wrapper"
+          data-color-slot-index="${i}"
+        ></div>
         <input 
           type="text"
           value="${color.code}"
@@ -327,6 +334,63 @@ class ColorSlotsView {
       });
     });
 
+    this.node_container.querySelectorAll('[data-js="color-slot-open-color-picker"]').forEach(node => {
+      node.addEventListener('click', (e) => {
+        const index = e.currentTarget.getAttribute('data-color-slot-index');
+        const node_color_picker_wrapper = this.node_container.querySelector(`[data-js="color-slot-color-picker-wrapper"][data-color-slot-index="${index}"]`);
+        this.dispatch('toggle_color_picker', {
+          index,
+          node_button: node,
+          node_color_picker_wrapper
+        });
+      });
+    });
+
   }
+
+}
+class ColorSlotsStore {
+  constructor() {
+    this.storage = new SimpleBrowserStorage('color-slots');
+    this.initialize_pesistent_store();
+  }
+
+  initialize_pesistent_store() {
+    if (!this.storage.get()) {
+      this.storage.set(this.create_initial_store());
+    }
+  }
+  create_initial_store() {
+    return {
+      colors: [
+        { code: '#ffffff' },
+        { code: '#000000' },
+      ],
+    }
+  }
+  is_initial_store(store) {
+    return JSON.stringify(store) === JSON.stringify(this.create_initial_store());
+  }
+  create_color_null() {
+    return {
+      code: 'black',
+    };
+  }
+  create_color(code) {
+    const color = this.create_color_null();
+    color.code = code;
+    return color;
+  }
+  get_last_time_store() {
+    const persisted_store = this.storage.get();
+    if (this.is_initial_store(persisted_store)) {
+      return null;
+    }
+    return persisted_store;
+  }
+  persist_store(store) {
+    this.storage.set(store);
+  }
+
 
 }

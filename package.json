@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@theodorejb/color-detect": "^1.0.1",
-    "clipboardy": "^3.0.0"
+    "clipboardy": "^3.0.0",
+    "vanilla-picker": "^2.12.1"
   }
 }

@@ -3,8 +3,8 @@ html {
 }
 body {
   font: var(--text-body);
+  letter-spacing: 0.07em;
   color: var(--text-color-upfront);
-  letter-spacing: 0.17em;
   -webkit-text-size-adjust: none;
 }
 
