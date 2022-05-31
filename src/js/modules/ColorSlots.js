@@ -8,10 +8,10 @@ export default class ColorSlots {
   constructor() {
     this.store = new ColorSlotsStore();
     this.view = new ColorSlotsView(this.dispatch.bind(this));
-    this.state = this.store.get_last_time_store() ?? this.store.create_initial_store();
-    this.view.update(this.state);
     this.clipboard_handler = new ClipboardHandler();
     this.ask_confirm_handler = new AskConfirm();
+    this.state = this.store.get_last_time_store() ?? this.store.create_initial_store();
+    this.view.update(this.state);
   }
   async dispatch(action, payload) {
     if (action === "update_color") {
@@ -72,44 +72,6 @@ export default class ColorSlots {
       this.store.persist_store(this.state);
       return;
     }
-    if (action === 'toggle_color_picker') {
-      const index = Number(payload.index);
-      const node_button = payload.node_button;
-      const node_color_picker_wrapper = payload.node_color_picker_wrapper;
-      const current_color_code = this.state.colors[index].code;
-      let picker;
-      if (!node_button.hasAttribute('data-color-picker-is-injected')) {
-        picker = new ColorPicker({
-          parent: node_color_picker_wrapper,
-          color: current_color_code,
-          onClose: color => {
-            // This will give you the color you selected
-            const color_code = color.hslaString;
-            // Code to do what you want with that color...
-            this.dispatch('update_color', { index, code: color_code });
-          },
-          // parent?: HTMLElement,
-          // popup?: 'top' | 'bottom' | 'left' | 'right' | false,
-          // template?: string,
-          // layout?: string,
-          // alpha?: boolean,
-          // editor?: boolean,
-          // editorFormat?: 'hex' | 'hsl' | 'rgb',
-          // cancelButton?: boolean,
-          // color?: string,
-          // onChange?: ColorCallback,
-          // onDone?: ColorCallback,
-          // onOpen?: ColorCallback,
-          // onClose?: ColorCallback,
-        });
-        node_button.setAttribute('data-color-picker-is-injected', true);
-        node_button._picker = picker;
-      }
-      picker = node_button._picker;
-      picker.openHandler();
-      return;
-    }
-
     throw new Error(`
     Action not supported by this dispatcher.
     
@@ -160,7 +122,7 @@ class ColorSlotsView {
     `;
 
     // register events on DOM nodes
-    this.register_events();
+    this.register_events(state);
   }
   create_derived_state(state) {
     const cloned_state = JSON.parse(JSON.stringify(state));
@@ -189,11 +151,6 @@ class ColorSlotsView {
           <span class="color-slot__button-icon" data-icon="color-picker"></span>
           <span class="color-slot__button-text">Color Picker</span>
         </button>
-        <div 
-          class="color-slot__color-picker-wrapper"
-          data-js="color-slot-color-picker-wrapper"
-          data-color-slot-index="${i}"
-        ></div>
         <input 
           type="text"
           value="${color.code}"
@@ -273,7 +230,7 @@ class ColorSlotsView {
     </div>
     `;
   }
-  register_events() {
+  register_events(state) {
     // UI events
     this.node_container.querySelectorAll('.color-slot').forEach(node => {
       node.querySelector('.color-slot__content').addEventListener('mouseenter', e => {
@@ -335,14 +292,46 @@ class ColorSlotsView {
     });
 
     this.node_container.querySelectorAll('[data-js="color-slot-open-color-picker"]').forEach(node => {
-      node.addEventListener('click', (e) => {
-        const index = e.currentTarget.getAttribute('data-color-slot-index');
-        const node_color_picker_wrapper = this.node_container.querySelector(`[data-js="color-slot-color-picker-wrapper"][data-color-slot-index="${index}"]`);
-        this.dispatch('toggle_color_picker', {
-          index,
-          node_button: node,
-          node_color_picker_wrapper
-        });
+      const index = node.getAttribute('data-color-slot-index');
+      const current_color_code = state.colors[index].code;
+      const picker = new ColorPicker({
+        parent: node,
+        color: current_color_code,
+        editor: false,
+        cancelButton: true,
+        onDone: color => {
+          // This function runs when user clicks on the "OK" button of the Color Picker
+
+          // This will give you the color you selected          
+          const color_code = color.hslaString;
+          // If current color is already the same as the new color, do nothing
+          if (current_color_code === color_code) return;
+          // Code to do what you want with that color...
+          this.dispatch('update_color', { index, code: color_code });
+        },
+        onOpen: color => {
+          // This function runs when the Picker is opened
+
+          // This will give you the color active inside the picker
+          const color_code = color.hslaString;
+          // If current color is already the same as the new color, do nothing
+          if (current_color_code === color_code) return;
+          // Code to do what you want with that color...
+          picker.setColor(current_color_code);
+        },
+        // parent?: HTMLElement,
+        // popup?: 'top' | 'bottom' | 'left' | 'right' | false,
+        // template?: string,
+        // layout?: string,
+        // alpha?: boolean,
+        // editor?: boolean,
+        // editorFormat?: 'hex' | 'hsl' | 'rgb',
+        // cancelButton?: boolean,
+        // color?: string,
+        // onChange?: ColorCallback,
+        // onDone?: ColorCallback,
+        // onOpen?: ColorCallback,
+        // onClose?: ColorCallback,
       });
     });
 

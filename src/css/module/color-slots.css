@@ -52,16 +52,19 @@
   flex-basis: 100%;
   display: none;
 }
+
 .color-slot__color-picker-opener {
-  flex-grow: 0;
-}
-.color-slot__color-picker-wrapper {
-  width: 0px;
+  flex-grow: 1;
 }
 .color-slot__input {
-  min-width: 8em;
-  flex-grow: 1;
+  flex-grow: 50;
   box-shadow: var(--button-box-shadow);
+  display: none;
+}
+@media (min-width: 32rem) {
+  .color-slot__input {
+    display: block;
+  }
 }
 
 .color-slot__content {
