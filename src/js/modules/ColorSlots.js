@@ -6,31 +6,32 @@ import ColorPicker from 'vanilla-picker';
 
 export default class ColorSlots {
   constructor() {
-    this.store = new ColorSlotsStore();
-    this.view = new ColorSlotsView(this.dispatch.bind(this));
     this.clipboard_handler = new ClipboardHandler();
     this.ask_confirm_handler = new AskConfirm();
-    this.state = this.store.get_last_time_store() ?? this.store.create_initial_store();
-    this.view.update(this.state);
-
     this.ColorDetector = new ColorDetector();
+
+    this.store = new ColorSlotsStore();
+    this.state = this.store.get_last_time_store() ?? this.store.create_initial_store();
+    this.view = new ColorSlotsView(this.dispatch.bind(this));
+
+    this.view.update(this.state);
   }
   async dispatch(action, payload) {
     if (action === "update_color") {
       const index = Number(payload.index);
       const color_code = payload.code;
       const color_code_parsed = this.ColorDetector.parse_color_code(color_code);
+      const new_state = this.clone_current_state();
       if (color_code_parsed.is_valid) {
-        this.state.colors[index].code = color_code_parsed.color_code_string_hsl;
+        new_state.colors[index].code = color_code_parsed.color_code_string_hsl;
       }
-      this.view.update(this.state);
-      this.store.persist_store(this.state);
+      this.update_state(new_state);
       return;
     }
     if (action === "create_color") {
-      this.state.colors = [...this.state.colors, this.store.create_color_null()];
-      this.view.update(this.state);
-      this.store.persist_store(this.state);
+      const new_state = this.clone_current_state();
+      new_state.colors = [...new_state.colors, this.store.create_color_null()];
+      this.update_state(new_state);
       return;
     }
     if (action === "delete_color") {
@@ -38,29 +39,29 @@ export default class ColorSlots {
       if (this.state.colors.length === 1) return;
       const user_is_sure = await this.ask_confirm_handler.ask_confirm('Are you sure to delete this color?');
       if (!user_is_sure) return;
-      this.state.colors.splice(index, 1);
-      this.view.update(this.state);
-      this.store.persist_store(this.state);
+      const new_state = this.clone_current_state();
+      new_state.colors.splice(index, 1);
+      this.update_state(new_state);
       return;
     }
     if (action === "move_left_color") {
       const index = Number(payload.index);
       if (index === 0) return;
-      const temp = this.state.colors[index - 1];
-      this.state.colors[index - 1] = this.state.colors[index];
-      this.state.colors[index] = temp;
-      this.view.update(this.state);
-      this.store.persist_store(this.state);
+      const new_state = this.clone_current_state();
+      const temp = new_state.colors[index - 1];
+      new_state.colors[index - 1] = new_state.colors[index];
+      new_state.colors[index] = temp;
+      this.update_state(new_state);
       return;
     }
     if (action === "move_right_color") {
       const index = Number(payload.index);
       if (index === this.state.colors.length - 1) return;
-      const temp = this.state.colors[index + 1];
-      this.state.colors[index + 1] = this.state.colors[index];
-      this.state.colors[index] = temp;
-      this.view.update(this.state);
-      this.store.persist_store(this.state);
+      const new_state = this.clone_current_state();
+      const temp = new_state.colors[index + 1];
+      new_state.colors[index + 1] = new_state.colors[index];
+      new_state.colors[index] = temp;
+      this.update_state(new_state);
       return;
     }
     if (action === "copy_color") {
@@ -83,6 +84,14 @@ export default class ColorSlots {
     Event: ${JSON.stringify({ action, payload })}
   `);
   }
+  update_state(new_state) {
+    this.state = new_state;
+    this.store.persist_store(this.state);
+    this.view.update(this.state);
+  }
+  clone_current_state() {
+    return JSON.parse(JSON.stringify(this.state));
+  }
 }
 
 class ColorSlotsView {
@@ -97,6 +106,22 @@ class ColorSlotsView {
     // create a js object containing the state and some derived data
     const derived_state = this.create_derived_state(state);
 
+    // create the html
+    this.render_html(derived_state);
+
+    // register events on DOM nodes
+    this.register_events(derived_state);
+  }
+  create_derived_state(state) {
+    const cloned_state = JSON.parse(JSON.stringify(state));
+    cloned_state.colors = cloned_state.colors.map((color, index) => ({
+      ...color,
+      is_light: this.ColorDetector.is_light_color(color.code),
+    }));
+    return cloned_state;
+  }
+  render_html(state) {
+
     // inject a color slot for each color in the state
     this.node_container.innerHTML = `
     <div class="color-slots__header">
@@ -105,10 +130,10 @@ class ColorSlotsView {
     
     <div class="color-slots__content">
       <div class="color-slots__slots">
-        ${(!derived_state.colors || derived_state.colors.length === 0) ? (
+        ${(!state.colors || state.colors.length === 0) ? (
         `<p>There are no colors</p>`
       ) : (
-        derived_state.colors.map((color, i) => this.render_color_slot(color, i)).join('')
+        state.colors.map((color, i) => this.render_color_slot(color, i)).join('')
       )}
       </div>
     </div>
@@ -125,16 +150,6 @@ class ColorSlotsView {
     </div>
     `;
 
-    // register events on DOM nodes
-    this.register_events(state);
-  }
-  create_derived_state(state) {
-    const cloned_state = JSON.parse(JSON.stringify(state));
-    cloned_state.colors = cloned_state.colors.map((color, index) => ({
-      ...color,
-      is_light: this.ColorDetector.is_light_color(color.code),
-    }));
-    return cloned_state;
   }
   render_color_slot(color, i) {
     return `
