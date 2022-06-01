@@ -73,9 +73,7 @@ export default class ColorSlots {
       const index = Number(payload.index);
       const color_code = await this.clipboard_handler.paste_from_clipboard();
       if (!color_code) return;
-      this.state.colors[index].code = color_code;
-      this.view.update(this.state);
-      this.store.persist_store(this.state);
+      this.dispatch("update_color", { index, code: color_code });
       return;
     }
     throw new Error(`
