@@ -42,7 +42,7 @@
   display: none;
 }
 
-/* Unique Parts */
+/* Color Slot - The Header */
 .color-slot__header {
   padding: calc(var(--spacing-unit) * 2);
   display: flex;
@@ -53,9 +53,25 @@
   display: none;
 }
 
+/* Color Slot - Color Picker Button Opener */
 .color-slot__color-picker-opener {
   flex-grow: 1;
 }
+
+/* Color Slot - Catch Click Outside Color Picker when Picker is Opened  */
+.color-slot--color-picker-is-opened .catch-click-outside-color-picker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 1;
+  pointer-events: all;
+  cursor: initial;
+}
+
+/* Color Slot - The Input that contains the color code */
 .color-slot__input {
   flex-grow: 50;
   box-shadow: var(--button-box-shadow);
@@ -67,6 +83,7 @@
   }
 }
 
+/* Color Slot - The Content */
 .color-slot__content {
   position: relative;
 }

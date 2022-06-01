@@ -136,6 +136,7 @@ class ColorSlotsView {
     return `
     <div 
       class="color-slot"
+      data-js="color-slot"
       data-color-slot-index="${i}"
       data-color-is-light="${color.is_light}"
     >
@@ -150,6 +151,7 @@ class ColorSlotsView {
         >
           <span class="color-slot__button-icon" data-icon="color-picker"></span>
           <span class="color-slot__button-text">Color Picker</span>
+          <div class="catch-click-outside-color-picker"></div>
         </button>
         <input 
           type="text"
@@ -293,6 +295,7 @@ class ColorSlotsView {
 
     this.node_container.querySelectorAll('[data-js="color-slot-open-color-picker"]').forEach(node => {
       const index = node.getAttribute('data-color-slot-index');
+      const node_color_slot = this.node_container.querySelector(`[data-js="color-slot"][data-color-slot-index="${index}"]`);
       const current_color_code = state.colors[index].code;
       const picker = new ColorPicker({
         parent: node,
@@ -312,6 +315,9 @@ class ColorSlotsView {
         onOpen: color => {
           // This function runs when the Picker is opened
 
+          // Add a class to css to show the picker is open
+          node_color_slot.classList.toggle('color-slot--color-picker-is-opened', true);
+
           // This will give you the color active inside the picker
           const color_code = color.hslaString;
           // If current color is already the same as the new color, do nothing
@@ -319,6 +325,12 @@ class ColorSlotsView {
           // Code to do what you want with that color...
           picker.setColor(current_color_code);
         },
+        onClose: () => {
+          // This function runs when the Picker is closed
+
+          // Remove the class to css to show the picker is open
+          node_color_slot.classList.toggle('color-slot--color-picker-is-opened', false);
+        }
         // parent?: HTMLElement,
         // popup?: 'top' | 'bottom' | 'left' | 'right' | false,
         // template?: string,
