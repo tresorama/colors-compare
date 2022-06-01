@@ -35,8 +35,8 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
-    "@theodorejb/color-detect": "^1.0.1",
     "clipboardy": "^3.0.0",
+    "colord": "^2.9.2",
     "vanilla-picker": "^2.12.1"
   }
 }

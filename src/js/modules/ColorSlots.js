@@ -12,11 +12,17 @@ export default class ColorSlots {
     this.ask_confirm_handler = new AskConfirm();
     this.state = this.store.get_last_time_store() ?? this.store.create_initial_store();
     this.view.update(this.state);
+
+    this.ColorDetector = new ColorDetector();
   }
   async dispatch(action, payload) {
     if (action === "update_color") {
       const index = Number(payload.index);
-      this.state.colors[index].code = payload.code;
+      const color_code = payload.code;
+      const color_code_parsed = this.ColorDetector.parse_color_code(color_code);
+      if (color_code_parsed.is_valid) {
+        this.state.colors[index].code = color_code_parsed.color_code_string_hsl;
+      }
       this.view.update(this.state);
       this.store.persist_store(this.state);
       return;
