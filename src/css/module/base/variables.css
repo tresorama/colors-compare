@@ -44,17 +44,17 @@
   /* Text */
   --font-family-main: var(--font-family-sans-serif);
 
-  --text-gigantic: normal 200 4.109rem/1.5 var(--font-family-main);
-  --text-huge: normal 400 3.24rem/1.5 var(--font-family-main);
-  --text-h1: normal 400 2.88rem/1.5 var(--font-family-main);
-  --text-h2: normal 400 2.28rem/1.5 var(--font-family-main);
-  --text-h3: normal 400 1.802rem/1.5 var(--font-family-main);
-  --text-h4: normal 400 1.602rem/1.5 var(--font-family-main);
-  --text-h5: normal 400 1.266rem/1.5 var(--font-family-main);
-  --text-body: normal 400 1rem/1.71 var(--font-family-main);
-  --text-small-1: normal 400 0.889rem/1.2 var(--font-family-main);
-  --text-small-2: normal 400 0.790rem/1.2 var(--font-family-main);
-  --text-small-3: normal 400 0.702rem/1.2 var(--font-family-main);
+  --text-6xl: normal 200 rem/1 var(--font-family-main);
+  --text-5xl: normal 400 4.117rem/1 var(--font-family-main);
+  --text-4xl: normal 400 3.252rem/1 var(--font-family-main);
+  --text-3xl: normal 400 2.568rem/1 var(--font-family-main);
+  --text-2xl: normal 400 2.029rem/1.1 var(--font-family-main);
+  --text-xl: normal 400 1.602rem/1.5 var(--font-family-main);
+  --text-lg: normal 400 1.266rem/1.5 var(--font-family-main);
+  --text-base: normal 400 1rem/1.5 var(--font-family-main);
+  --text-sm: normal 400 0.789rem/1.5 var(--font-family-main);
+  --text-xs: normal 400 0.623rem/1.5 var(--font-family-main);
+  --text-2xs: normal 400 0.492rem/1.5 var(--font-family-main);
   /* font: font-style font-variant font-weight font-size/line-height font-family; */
 
   /* Spacing */

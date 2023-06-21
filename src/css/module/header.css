@@ -7,8 +7,8 @@
     ;
 }
 .header__heading {
-  font: var(--text-h1);
+  font: var(--text-5xl);
 }
 .header__subheading {
-  font: var(--text-h5);
+  font: var(--text-xl);
 }

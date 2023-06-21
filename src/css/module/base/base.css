@@ -2,7 +2,7 @@ html {
   font-size: 90%;
 }
 body {
-  font: var(--text-body);
+  font: var(--text-base);
   letter-spacing: 0.07em;
   color: var(--text-color-upfront);
   -webkit-text-size-adjust: none;
