@@ -30,28 +30,20 @@
 
   <footer class="footer">
     <div class="container">
-      <div class="footer__inner"></div>
+      <div class="footer__inner">
+        <span class="footer__author-line">
+          A <a href="https://codepen.io/tresorama" target="_blank" class="footer__link">Jacopo Marrone</a> frontend
+          tool.
+          <br />
+          <br />
+          View <a href="https://bitbucket.org/tresorama/frontend-tool-colors-compare/src/master/" target="_blank">source
+            code</a>.
+          <br />
+          <a href="mailto:jacopo.marrone27@gmail.com" target="_blank" class="footer__link">Contact Me</a>
+        </span>
+      </div>
     </div>
   </footer>
-  <script>
-    (() => {
-      const authorInfo = {
-        name: 'Jacopo Marrone',
-        mail: 'jacopo.marrone27@gmail.com',
-        author_permalink: 'https://codepen.io/tresorama',
-        source_code_permalink: 'https://bitbucket.org/tresorama/frontend-tool-colors-compare/src/master/',
-        contact_me_permalink: 'mailto:jacopo.marrone27@gmail.com'
-      };
-
-      document.querySelector('.footer .footer__inner').innerHTML = `
-      <span class="footer__author-line">
-          A <a href="${authorInfo.author_permalink}" target="_blank" class="footer__link">${authorInfo.name}</a> frontend tool. View <a href="${authorInfo.source_code_permalink}" target="_blank">source code</a>. <a href="${authorInfo.contact_me_permalink}"  target="_blank" class="footer__link">Contact Me</a>
-      </span>
-      `;
-    })()
-  </script>
-
-
 </body>
 
 </html>
