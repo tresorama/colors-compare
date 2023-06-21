@@ -6,22 +6,49 @@ import ColorPicker from 'vanilla-picker';
 
 export default class ColorSlots {
   constructor() {
+    // init helpers
     this.clipboard_handler = new ClipboardHandler();
     this.ask_confirm_handler = new AskConfirm();
-    this.ColorDetector = new ColorDetector();
+    this.color_detector_handler = new ColorDetector();
 
-    this.store = new ColorSlotsStore();
-    this.state = this.store.get_last_time_store() ?? this.store.create_initial_store();
+    // init state and view
+    this.persistent_storage = new SimpleBrowserStorage('color-slots');
+    this.state = this.persistent_storage.get() ?? this.get_initial_state();
     this.view = new ColorSlotsView(this.dispatch.bind(this));
 
+    // update view on load
     this.view.update(this.state);
   }
+  get_initial_state() {
+    return {
+      colors: [
+        { code: 'hsla(1,100%,50%,1)' },
+        { code: 'hsla(20,100%,50%,1)' },
+        { code: 'hsla(30,100%,50%,1)' },
+      ],
+    };
+  }
+  get_color_null() {
+    return {
+      code: 'black',
+    };
+  }
+  update_state(new_state) {
+    this.state = new_state;
+    this.persistent_storage.set(this.state);
+    this.view.update(this.state);
+  }
+
   async dispatch(action, payload) {
+    // utils
+    const get_cloned_state = () => JSON.parse(JSON.stringify(this.state));
+
+    // logic
     if (action === "update_color") {
       const index = Number(payload.index);
       const color_code = payload.code;
-      const color_code_parsed = this.ColorDetector.parse_color_code(color_code);
-      const new_state = this.clone_current_state();
+      const color_code_parsed = this.color_detector_handler.parse_color_code(color_code);
+      const new_state = get_cloned_state();
       if (color_code_parsed.is_valid) {
         new_state.colors[index].code = color_code_parsed.color_code_string_hsl;
       }
@@ -29,8 +56,8 @@ export default class ColorSlots {
       return;
     }
     if (action === "create_color") {
-      const new_state = this.clone_current_state();
-      new_state.colors = [...new_state.colors, this.store.create_color_null()];
+      const new_state = get_cloned_state();
+      new_state.colors = [...new_state.colors, this.store.get_color_null()];
       this.update_state(new_state);
       return;
     }
@@ -39,7 +66,7 @@ export default class ColorSlots {
       if (this.state.colors.length === 1) return;
       const user_is_sure = await this.ask_confirm_handler.ask_confirm('Are you sure to delete this color?');
       if (!user_is_sure) return;
-      const new_state = this.clone_current_state();
+      const new_state = get_cloned_state();
       new_state.colors.splice(index, 1);
       this.update_state(new_state);
       return;
@@ -47,7 +74,7 @@ export default class ColorSlots {
     if (action === "move_left_color") {
       const index = Number(payload.index);
       if (index === 0) return;
-      const new_state = this.clone_current_state();
+      const new_state = get_cloned_state();
       const temp = new_state.colors[index - 1];
       new_state.colors[index - 1] = new_state.colors[index];
       new_state.colors[index] = temp;
@@ -57,7 +84,7 @@ export default class ColorSlots {
     if (action === "move_right_color") {
       const index = Number(payload.index);
       if (index === this.state.colors.length - 1) return;
-      const new_state = this.clone_current_state();
+      const new_state = get_cloned_state();
       const temp = new_state.colors[index + 1];
       new_state.colors[index + 1] = new_state.colors[index];
       new_state.colors[index] = temp;
@@ -84,14 +111,6 @@ export default class ColorSlots {
     Event: ${JSON.stringify({ action, payload })}
   `);
   }
-  update_state(new_state) {
-    this.state = new_state;
-    this.store.persist_store(this.state);
-    this.view.update(this.state);
-  }
-  clone_current_state() {
-    return JSON.parse(JSON.stringify(this.state));
-  }
 }
 
 class ColorSlotsView {
@@ -99,7 +118,7 @@ class ColorSlotsView {
     this.node_container = document.querySelector('.color-slots');
     if (!this.node_container) return;
     this.dispatch = dispatch;
-    this.ColorDetector = new ColorDetector();
+    this.color_detector_handler = new ColorDetector();
     this.update({ colors: [] });
   }
   update(state) {
@@ -116,7 +135,7 @@ class ColorSlotsView {
     const cloned_state = JSON.parse(JSON.stringify(state));
     cloned_state.colors = cloned_state.colors.map((color, index) => ({
       ...color,
-      is_light: this.ColorDetector.is_light_color(color.code),
+      is_light: this.color_detector_handler.is_light_color(color.code),
     }));
     return cloned_state;
   }
@@ -367,51 +386,5 @@ class ColorSlotsView {
     });
 
   }
-
-}
-class ColorSlotsStore {
-  constructor() {
-    this.storage = new SimpleBrowserStorage('color-slots');
-    this.initialize_pesistent_store();
-  }
-
-  initialize_pesistent_store() {
-    if (!this.storage.get()) {
-      this.storage.set(this.create_initial_store());
-    }
-  }
-  create_initial_store() {
-    return {
-      colors: [
-        { code: 'hsla(1,100%,50%,1)' },
-        { code: 'hsla(20,100%,50%,1)' },
-        { code: 'hsla(30,100%,50%,1)' },
-      ],
-    }
-  }
-  is_initial_store(store) {
-    return JSON.stringify(store) === JSON.stringify(this.create_initial_store());
-  }
-  create_color_null() {
-    return {
-      code: 'black',
-    };
-  }
-  create_color(code) {
-    const color = this.create_color_null();
-    color.code = code;
-    return color;
-  }
-  get_last_time_store() {
-    const persisted_store = this.storage.get();
-    if (this.is_initial_store(persisted_store)) {
-      return null;
-    }
-    return persisted_store;
-  }
-  persist_store(store) {
-    this.storage.set(store);
-  }
-
 
 }

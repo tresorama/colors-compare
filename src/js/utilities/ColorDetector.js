@@ -16,12 +16,11 @@ export default class ColorDetector {
   }
 
   parse_color_code(color_code) {
-    debugger;
     if (!this.is_valid_color_code(color_code)) {
       return {
         is_valid: false,
         color_code_raw: color_code,
-      }
+      };
     }
 
     return {
