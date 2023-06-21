@@ -17,18 +17,3 @@
 .container--tiny {
   max-width: var(--container-tiny-max-width);
 }
-
-
-
-.content {
-  padding-bottom: calc(var(--spacing-unit) * 16);
-  padding-top: calc(var(--spacing-unit) * 16);
-}
-
-.section__padding {
-  padding: calc(var(--spacing-unit) * 10) 0;
-}
-
-.spacer {
-  height: calc(var(--spacing-unit) * 5);
-}

@@ -1,12 +1,13 @@
 .footer {
   background-color: var(--grey-150);
-  padding: 
-    calc(var(--spacing-unit) * 6)
-    0
-    ;
+  padding-top: calc(var(--spacing-unit) * 12);
+  padding-bottom: calc(var(--spacing-unit) * 6);
 }
 
 .footer__inner {
   display: flex;
   justify-content: center;
+  text-align: center;
+  font: var(--text-base);
+  color: var(--grey-800);
 }

@@ -9,7 +9,8 @@
 @import url('module/base/layout.css');
 @import url('module/base/grid.css');
 @import url('module/button.css');
-@import url('module/footer.css');
 
 @import url('module/header.css');
+@import url('module/content.css');
+@import url('module/footer.css');
 @import url('module/color-slots.css');

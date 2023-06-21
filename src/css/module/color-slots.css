@@ -3,6 +3,7 @@
 =================================================== */
 .color-slots {
   --button-bg-color: rgba(0, 0, 0, 0.05);
+  --button-bg-color--hover: rgba(0, 0, 0, 0.12);
   --button-box-shadow:  0 0 2px 1px rgba(0, 0, 0, 0.1);
   --color-slot-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
 }
@@ -37,6 +38,9 @@
   background-color: var(--button-bg-color);
   box-shadow: var(--button-box-shadow);
   cursor: pointer;
+}
+.color-slot__button:hover {
+  background-color: var(--button-bg-color--hover);
 }
 .color-slot__button-text {
   display: none;
