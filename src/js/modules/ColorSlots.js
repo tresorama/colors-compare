@@ -56,8 +56,9 @@ export default class ColorSlots {
       return;
     }
     if (action === "create_color") {
+      debugger;
       const new_state = get_cloned_state();
-      new_state.colors = [...new_state.colors, this.store.get_color_null()];
+      new_state.colors = [...new_state.colors, this.get_color_null()];
       this.update_state(new_state);
       return;
     }
